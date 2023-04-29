@@ -16,10 +16,12 @@ const Home = () => {
           setItems(json);
           setisLoading(false);
         });
+        window.scrollTo(0, 0);
     }, []);
   
   return (
     <>
+    <div className='container'>
         <div className="content__top">
             <Categories />
             <Sort />
@@ -31,6 +33,7 @@ const Home = () => {
               : items.map((pizza) =>
                   isLoading ? <Skeleton /> : <PizzaBlock key={pizza.id} {...pizza} />,
                 )}
+          </div>
           </div>
     </>
   )
