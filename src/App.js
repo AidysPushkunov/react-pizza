@@ -7,6 +7,8 @@ import NotFound from './pages/NotFound';
 import { Routes, Route } from 'react-router-dom';
 import Cart from './pages/Cart';
 
+import { store } from './redux/store';
+
 export const SearchContext = React.createContext();
 
 function App() {
