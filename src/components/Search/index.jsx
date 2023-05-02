@@ -13,8 +13,8 @@ function Search() {
 
 
     const onClickClear = () => {
-        setValue('');
         setSearchValue('')
+        setValue('');
         inputRef.current.focus();
     };
 
@@ -27,8 +27,9 @@ function Search() {
 
 
     const onChangeInput = (event) => {
-        setValue(event.target.value)
-        updateSearchValue(value)
+        let value = event.target.value;
+        setValue(value);
+        updateSearchValue(value);
     }
     
 
