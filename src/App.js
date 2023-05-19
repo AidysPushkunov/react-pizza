@@ -7,16 +7,11 @@ import NotFound from './pages/NotFound';
 import { Routes, Route } from 'react-router-dom';
 import Cart from './pages/Cart';
 
-import { store } from './redux/store';
-
-export const SearchContext = React.createContext();
 
 function App() {
-  const [searchValue, setSearchValue] = React.useState('');
 
   return (
     <div className="wrapper">
-      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
         <div className="content">
           {/* <div className="container"> */}
@@ -27,7 +22,6 @@ function App() {
           </Routes>
           {/* </div> */}
         </div>
-      </SearchContext.Provider>
     </div>
   );
 }
