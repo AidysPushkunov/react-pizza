@@ -12,8 +12,9 @@ import {
 } from "../redux/slice/filterSlice";
 import { fetchPizzas, selectPizzaData } from "../redux/slice/pizzaSlice";
 
+
 import Categories from "../components/Categories/Categories";
-import Sort, { list } from "../components/Sort/Sort";
+import { Sort, sortList } from "../components/Sort/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
@@ -75,7 +76,7 @@ const Home: React.FC = () => {
   React.useEffect(() => {
     if (window.location.search) {
       const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams;
-      const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
 
       // if (sort) {
       // params.sort = sort;
@@ -86,7 +87,7 @@ const Home: React.FC = () => {
           searchValue: params.search,
           categoryItem: Number(params.categoryType),
           currentPage: Number(params.currentPage),
-          sort: sort || list[0],
+          sort: sort || sortList[0],
         })
       );
     }
@@ -116,7 +117,7 @@ const Home: React.FC = () => {
             categoryItem={categoryItem}
             onChangeCategory={onClickCategory}
           />
-          <Sort />
+          <Sort value={sort} />
         </div>
         <h2 className="content__title">Все пиццы</h2>
 
