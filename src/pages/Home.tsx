@@ -1,7 +1,8 @@
 import React from "react";
 import qs from "qs";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+
 
 import {
   selectFilter,
@@ -16,9 +17,13 @@ import Sort, { list } from "../components/Sort/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
+import { useAppDispatch } from "../redux/store";
+import { SearchPizzaParams } from "../redux/slice/pizzaSlice";
 
-const Home = () => {
-  const dispatch = useDispatch();
+
+
+const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
@@ -27,19 +32,16 @@ const Home = () => {
   const { categoryItem, sort, currentPage, searchValue } =
     useSelector(selectFilter);
 
-  // const [items, setItems] = React.useState([]);
-  // const [isLoading, setisLoading] = React.useState(true);
-
   const sortType = sort.sortProperty.replace("-", "");
-  const orderType = sort.sortProperty.includes("-") ? "asc" : "desc";
+  const orderType = sort.sortProperty.includes && sort.sortProperty.includes("-") ? "asc" : "desc";
   const categoryType = categoryItem > 0 ? `category=${categoryItem}` : "";
   const search = searchValue ? `&search=${searchValue}` : "";
 
-  const onClickCategory = (id) => {
-    dispatch(setCategoryId(id));
+  const onClickCategory = (idx: number) => {
+    dispatch(setCategoryId(idx));
   };
 
-  const onChangePage = (page) => {
+  const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
   };
 
@@ -50,7 +52,7 @@ const Home = () => {
         orderType,
         categoryType,
         search,
-        currentPage,
+        currentPage: String(currentPage),
       })
     );
 
@@ -58,14 +60,33 @@ const Home = () => {
   };
 
   React.useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sort: sort.sortProperty,
+        categoryItem,
+        currentPage,
+      });
+
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [categoryItem, sort.sortProperty, searchValue, currentPage]);
+
+  React.useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = list.find((obj) => obj.sortProperty === params.sort);
+      const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams;
+      const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+
+      // if (sort) {
+      // params.sort = sort;
+      // }
 
       dispatch(
         setFilters({
-          ...params,
-          sort,
+          searchValue: params.search,
+          categoryItem: Number(params.categoryType),
+          currentPage: Number(params.currentPage),
+          sort: sort || list[0],
         })
       );
     }
@@ -82,20 +103,7 @@ const Home = () => {
     isSearch.current = false;
   }, [categoryItem, sort, searchValue, currentPage]);
 
-  React.useEffect(() => {
-    if (isMounted.current) {
-      const queryString = qs.stringify({
-        sort: sort.sortProperty,
-        categoryItem,
-        currentPage,
-      });
-
-      navigate(`?${queryString}`);
-    }
-    isMounted.current = true;
-  }, [categoryItem, sort, currentPage]);
-
-  const pizzas = items.map((obj) => <Link to={`/pizza/${obj.id}`}><PizzaBlock key={obj.id} {...obj} /></Link>);
+  const pizzas = items.map((obj: any) => <Link key={obj.id} to={`/pizza/${obj.id}`}><PizzaBlock key={obj.id} {...obj} /></Link>);
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
@@ -106,7 +114,7 @@ const Home = () => {
         <div className="content__top">
           <Categories
             categoryItem={categoryItem}
-            onClickCategory={onClickCategory}
+            onChangeCategory={onClickCategory}
           />
           <Sort />
         </div>
