@@ -33,7 +33,7 @@ const Home: React.FC = () => {
     useSelector(selectFilter);
 
   const sortType = sort.sortProperty.replace("-", "");
-  const orderType = sort.sortProperty.includes && sort.sortProperty.includes("-") ? "asc" : "desc";
+  const orderType = sort.sortProperty.includes("-") ? "asc" : "desc";
   const categoryType = categoryItem > 0 ? `category=${categoryItem}` : "";
   const search = searchValue ? `&search=${searchValue}` : "";
 
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
     isSearch.current = false;
   }, [categoryItem, sort, searchValue, currentPage]);
 
-  const pizzas = items.map((obj: any) => <Link key={obj.id} to={`/pizza/${obj.id}`}><PizzaBlock key={obj.id} {...obj} /></Link>);
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
