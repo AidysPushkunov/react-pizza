@@ -1,5 +1,7 @@
 @import '../variables';
 
+
+
 .button {
   display: inline-block;
   background-color: $orange;
@@ -33,6 +35,7 @@
     transform: translateY(1px);
   }
 
+
   &--circle {
     display: flex;
     align-items: center;
@@ -56,6 +59,7 @@
   &--outline {
     background-color: #fff;
     border-color: $orange;
+
     &,
     span {
       color: $orange;
@@ -85,7 +89,46 @@
     &:active {
       background-color: darken($orange, 8%);
     }
+
+
   }
+
+  &--disable-button {
+    background-color: #fff;
+    border-color: #d4d4d4;
+    color: #d4d4d4;
+
+
+    &,
+    span {
+      color: #d4d4d4;
+    }
+
+    svg {
+      path {
+        fill: #d4d4d4;
+      }
+    }
+
+
+    &:hover {
+      background-color: #fff;
+
+      &,
+      span {
+        color: #d4d4d4;
+      }
+
+      svg {
+        path {
+          fill: #d4d4d4;
+        }
+      }
+    }
+
+
+  }
+
 
   &__delimiter {
     width: 1px;

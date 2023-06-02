@@ -38,9 +38,9 @@ const Home: React.FC = () => {
   const categoryType = categoryItem > 0 ? `category=${categoryItem}` : "";
   const search = searchValue ? `&search=${searchValue}` : "";
 
-  const onClickCategory = (idx: number) => {
+  const onClickCategory = React.useCallback((idx: number) => {
     dispatch(setCategoryId(idx));
-  };
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -60,39 +60,39 @@ const Home: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  React.useEffect(() => {
-    if (isMounted.current) {
-      const queryString = qs.stringify({
-        sort: sort.sortProperty,
-        categoryItem,
-        currentPage,
-      });
+  // React.useEffect(() => {
+  //   if (isMounted.current) {
+  //     const queryString = qs.stringify({
+  //       sort: sort.sortProperty,
+  //       categoryItem,
+  //       currentPage,
+  //     });
 
-      navigate(`?${queryString}`);
-    }
-    isMounted.current = true;
-  }, [categoryItem, sort.sortProperty, searchValue, currentPage]);
+  //     navigate(`?${queryString}`);
+  //   }
+  //   isMounted.current = true;
+  // }, [categoryItem, sort.sortProperty, searchValue, currentPage]);
 
-  React.useEffect(() => {
-    if (window.location.search) {
-      const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams;
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
+  // React.useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams;
+  //     const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
 
-      // if (sort) {
-      // params.sort = sort;
-      // }
+  //     // if (sort) {
+  //     // params.sort = sort;
+  //     // }
 
-      dispatch(
-        setFilters({
-          searchValue: params.search,
-          categoryItem: Number(params.categoryType),
-          currentPage: Number(params.currentPage),
-          sort: sort || sortList[0],
-        })
-      );
-    }
-    isSearch.current = true;
-  }, []);
+  //     dispatch(
+  //       setFilters({
+  //         searchValue: params.search,
+  //         categoryItem: Number(params.categoryType),
+  //         currentPage: Number(params.currentPage),
+  //         sort: sort || sortList[0],
+  //       })
+  //     );
+  //   }
+  //   isSearch.current = true;
+  // }, []);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
