@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 
 import logoSvg from "../../assets/img/pizza-logo.svg";
 import Search from "../Search";
-import { selectCart } from "../../redux/slice/cartSlice";
-import { useEffect } from "react";
+import { selectCart } from "../../redux/cart/selectors";
+
 
 const Header = () => {
   const { items, totalPrice } = useSelector(selectCart);

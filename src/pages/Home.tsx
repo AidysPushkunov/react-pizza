@@ -1,26 +1,16 @@
 import React from "react";
-import qs from "qs";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-
-
-import {
-  selectFilter,
-  setCategoryId,
-  setCurrentPage,
-  setFilters,
-} from "../redux/slice/filterSlice";
-import { fetchPizzas, selectPizzaData } from "../redux/slice/pizzaSlice";
-
-
+import { useNavigate } from "react-router-dom";
 import Categories from "../components/Categories/Categories";
-import { Sort, sortList } from "../components/Sort/Sort";
+import { Sort } from "../components/Sort/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
 import { useAppDispatch } from "../redux/store";
-import { SearchPizzaParams } from "../redux/slice/pizzaSlice";
-
+import { selectPizzaData } from "../redux/pizza/selectors";
+import { selectFilter } from "../redux/filter/selectors";
+import { setCategoryId, setCurrentPage } from "../redux/filter/slice";
+import { fetchPizzas } from "../redux/pizza/asyncActions";
 
 
 const Home: React.FC = () => {
@@ -59,40 +49,6 @@ const Home: React.FC = () => {
 
     window.scrollTo(0, 0);
   };
-
-  // React.useEffect(() => {
-  //   if (isMounted.current) {
-  //     const queryString = qs.stringify({
-  //       sort: sort.sortProperty,
-  //       categoryItem,
-  //       currentPage,
-  //     });
-
-  //     navigate(`?${queryString}`);
-  //   }
-  //   isMounted.current = true;
-  // }, [categoryItem, sort.sortProperty, searchValue, currentPage]);
-
-  // React.useEffect(() => {
-  //   if (window.location.search) {
-  //     const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams;
-  //     const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
-
-  //     // if (sort) {
-  //     // params.sort = sort;
-  //     // }
-
-  //     dispatch(
-  //       setFilters({
-  //         searchValue: params.search,
-  //         categoryItem: Number(params.categoryType),
-  //         currentPage: Number(params.currentPage),
-  //         sort: sort || sortList[0],
-  //       })
-  //     );
-  //   }
-  //   isSearch.current = true;
-  // }, []);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
